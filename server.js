@@ -82,6 +82,9 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // サーバー起動
+// ホストを '0.0.0.0' に設定することで、Renderからのアクセスが可能になる
+const HOST = '0.0.0.0'; 
+
 app.listen(PORT, () => {
   console.log(`ポートフォリオサイトが起動しました: http://localhost:${PORT}`);
   console.log('Ctrl+C で終了');
