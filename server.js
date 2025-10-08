@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 3000;
 // ミドルウェア
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // publicフォルダを公開
+
+// 静的ファイルを提供（パスを明示）
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Gemini API初期化
 const apiKey = process.env.GEMINI_API_KEY;
@@ -17,10 +19,10 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 // あなたの情報（index.htmlから取得した情報を元に）
 const myInfo = `
-あなたは長濱直樹（Nagahama Naoki）に関する質問に答えるアシスタントです。
+あなたは[Nagahama Naoki]に関する質問に答えるアシスタントです。
 
 【基本情報】
-名前: 長濱直樹（Nagahama Naoki）
+名前: [Nagahama Naoki]
 職業: Web Coder
 専門: UI/UX重視のWeb制作
 キャッチフレーズ: 思いを形にする、UI/UX重視のWeb制作
@@ -51,7 +53,7 @@ const myInfo = `
 - Adobe IllustratorやPhotoshopを使ったグラフィックデザインの経験もある
 - ユーザーにとって使いやすく、心に残るような体験をデザインすることを心がけている
 
-この情報を基に、長濱直樹について聞かれた質問に丁寧に答えてください。
+この情報を基に、Nagahama Naokiについて聞かれた質問に丁寧に答えてください。
 日本語で自然な会話を心がけてください。
 `;
 
