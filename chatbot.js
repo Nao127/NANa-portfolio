@@ -12,7 +12,7 @@ const myInfo = `
 あなたは私に関する質問に答えるアシスタントです。
 
 【私の情報】
-名前: 長濱直樹（Nagahama Naoki）
+名前: Nagahama Naoki
 職業: Webコーダー
 専門技術: HTML, CSS, JavaScript, Illustrator, Photoshop
 作品:
