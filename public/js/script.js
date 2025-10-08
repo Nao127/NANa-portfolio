@@ -387,3 +387,29 @@ if (chatMessages && chatInput && chatSendBtn) {
         if (e.key === 'Enter') sendChatMessage();
     });
 }
+
+// ===== テーマ切り替え機能 =====
+
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const body = document.body;
+
+// アイコンをHTMLに動的に追加
+themeToggleBtn.innerHTML = '<i class="las la-sun"></i><i class="las la-moon"></i>';
+
+// 1. ページ読み込み時に、保存されたテーマ設定を適用する
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme === 'dark') {
+    body.classList.add('dark-mode');
+}
+
+// 2. ボタンクリック時のイベントリスナー
+themeToggleBtn.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    
+    // 3. 切り替えた設定をlocalStorageに保存する
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});

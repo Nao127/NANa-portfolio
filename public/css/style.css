@@ -116,6 +116,8 @@
     --card-radius: var(--radius-md);
     --card-shadow: var(--shadow-sm);
     --card-description-padding: var(--spacing-sm);
+    --card-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
 /* works tag */
     --tag-font-size: var(--font-size-2xs);
     --tag-border: 1px solid var(--color-text-base);
@@ -829,7 +831,7 @@ header {
     }
     .works-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--card-box-shadow);
     }
 
     /* スライドバーはデスクトップでは非表示 */
@@ -967,4 +969,85 @@ header {
         }
     }
 
+}
+
+/* ===== ダークモード ===== */
+body.dark-mode {
+    /* == Semantic Tokens == */
+    --color-background-base: #1a1a1a;
+    --color-background-muted: #242424;
+    --color-background-subtle: #2f2f2f;
+    --color-text-base: var(--color-grey-100);
+    --color-border-subtle: #444;
+
+    /* == Component Tokens == */
+    /* header */
+    --header-background-color: rgba(26, 26, 26, 0.9);
+
+    /* card */
+    --card-background-color: #2f2f2f;
+    --card-border: 2px solid #444;
+    --card-title-border-color: 2px solid #444;
+    --card-box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4);
+
+    /* contact form */
+    --form-border: 1px solid #555;
+
+    /* chatbot */
+    --chat-widget-border-color: #444;
+    --chat-messages-background: #1a1a1a;
+    --bot-message-background: #2f2f2f;
+    --bot-message-border-color: #444;
+    --chat-input-area-background: #2f2f2f;
+    --chat-input-border-color: #555;
+}
+
+/* 一部のコンポーネントの背景色やボーダーを直接上書き */
+body.dark-mode .chat-widget {
+    background: var(--color-background-muted);
+    border-color: var(--chat-widget-border-color);
+}
+body.dark-mode .chat-messages {
+    background: var(--chat-messages-background);
+}
+body.dark-mode .bot-message .message-content {
+    background: var(--bot-message-background);
+    border-color: var(--bot-message-border-color);
+}
+body.dark-mode .chat-input-area {
+    background: var(--chat-input-area-background);
+    border-top-color: var(--bot-message-border-color);
+}
+body.dark-mode #chatInput {
+    background: var(--color-background-base);
+    color: var(--color-text-base);
+    border-color: var(--chat-input-border-color);
+}
+
+/* スムーズな色の切り替え */
+body, .header, .section, input, textarea, button, .works-card, .chat-widget {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ===== テーマ切り替えボタンのスタイル ===== */
+#theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-base);
+    font-size: var(--font-size-xl);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ダークモード時に月のアイコンを表示 */
+body.dark-mode #theme-toggle-btn .la-sun {
+    display: none;
+}
+#theme-toggle-btn .la-moon {
+    display: none;
+}
+body.dark-mode #theme-toggle-btn .la-moon {
+    display: block;
 }
