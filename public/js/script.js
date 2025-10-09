@@ -388,6 +388,97 @@ if (chatMessages && chatInput && chatSendBtn) {
     });
 }
 
+// ===== コンタクトフォーム機能（新規追加） =====
+const contactForm = document.querySelector('.contact-form');
+
+if (contactForm) {
+    // フォーム送信時の処理
+    contactForm.addEventListener('submit', async (event) => {
+        // デフォルトのフォーム送信動作（ページリロード）を防止
+        event.preventDefault();
+        
+        // フォームの各入力欄から値を取得
+        const formData = {
+            name: contactForm.querySelector('input[name="name"]').value,
+            email: contactForm.querySelector('input[name="email"]').value,
+            message: contactForm.querySelector('textarea[name="message"]').value
+        };
+        
+        // 送信ボタンを取得
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        
+        // 送信中は二重送信を防ぐためボタンを無効化
+        submitButton.disabled = true;
+        submitButton.textContent = '送信中...';
+        
+        try {
+            // サーバーにデータを送信
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            // サーバーからの応答を取得
+            const data = await response.json();
+            
+            if (data.success) {
+                // 送信成功時の処理
+                showContactMessage('success', data.message || 'お問い合わせを受け付けました。ありがとうございます！');
+                
+                // フォームをリセット（入力欄を空にする）
+                contactForm.reset();
+            } else {
+                // 送信失敗時の処理
+                showContactMessage('error', data.error || '送信に失敗しました。もう一度お試しください。');
+            }
+            
+        } catch (error) {
+            // ネットワークエラーなどの予期しないエラー
+            console.error('送信エラー:', error);
+            showContactMessage('error', 'エラーが発生しました。インターネット接続を確認して、もう一度お試しください。');
+        } finally {
+            // 送信処理が終わったらボタンを再度有効化
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+        }
+    });
+}
+
+// メッセージ表示関数
+// 成功/失敗メッセージをユーザーに表示します
+function showContactMessage(type, message) {
+    // 既存のメッセージがあれば削除
+    const existingMessage = document.querySelector('.contact-message-alert');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // 新しいメッセージ要素を作成
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `contact-message-alert ${type}`;
+    messageDiv.textContent = message;
+    
+    // フォームの上にメッセージを挿入
+    contactForm.parentNode.insertBefore(messageDiv, contactForm);
+    
+    // メッセージをアニメーションで表示
+    setTimeout(() => {
+        messageDiv.classList.add('show');
+    }, 10);
+    
+    // 5秒後に自動的にメッセージを消す
+    setTimeout(() => {
+        messageDiv.classList.remove('show');
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 300);
+    }, 5000);
+}
+
 // ===== テーマ切り替え機能 =====
 
 const themeToggleBtn = document.getElementById('theme-toggle-btn');

@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const nodemailer = require('nodemailer'); // メール送信用ライブラリを読み込む
 const path = require('path');
 
 const app = express();
@@ -18,7 +19,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
-// あなたの情報（index.htmlから取得した情報を元に）
+// Nodemailerの設定
+// これはメール送信のための「郵便配達員」を作るようなものです
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Gmailを使うことを指定
+  auth: {
+    user: process.env.EMAIL_USER, // 送信元のGmailアドレス
+    pass: process.env.EMAIL_PASS  // アプリパスワード
+  }
+});
+
+// メール送信機能が正しく設定されているか確認
+// サーバー起動時に一度だけチェックします
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log('メール設定エラー:', error);
+  } else {
+    console.log('メール送信の準備ができました');
+  }
+});
+
+// あなたの情報（チャットボット用）
 const myInfo = `
 あなたは[Nagahama Naoki]に関する質問に答えるアシスタントです。
 
@@ -58,7 +79,7 @@ const myInfo = `
 日本語で自然な会話を心がけてください。
 `;
 
-// チャットAPIエンドポイント
+// チャットAPIエンドポイント（既存のコード）
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
@@ -82,11 +103,100 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+// コンタクトフォーム送信APIエンドポイント（新規追加）
+// ここがコンタクトフォームからの送信を受け取る部分です
+app.post('/api/contact', async (req, res) => {
+  try {
+    // フロントエンドから送られてきた情報を受け取る
+    const { name, email, message } = req.body;
+    
+    // 必須項目がすべて入力されているか確認
+    // もし何か欠けていたら、エラーを返します
+    if (!name || !email || !message) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'すべての項目を入力してください' 
+      });
+    }
+
+    // メールアドレスの形式が正しいか簡単にチェック
+    // @マークが含まれているかを確認する基本的なチェックです
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'メールアドレスの形式が正しくありません' 
+      });
+    }
+
+    // 送信するメールの内容を設定
+    // HTMLメールとプレーンテキストの両方を用意します
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // 送信元（あなたのGmail）
+      to: process.env.EMAIL_TO,     // 送信先（メールを受け取るアドレス）
+      subject: `【ポートフォリオ】${name}様からのお問い合わせ`, // メールの件名
+      
+      // プレーンテキスト版（HTMLが表示できない環境用）
+      text: `
+お名前: ${name}
+メールアドレス: ${email}
+
+お問い合わせ内容:
+${message}
+      `,
+      
+      // HTML版（見やすく整形されたバージョン）
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
+            ポートフォリオサイトからのお問い合わせ
+          </h2>
+          
+          <div style="background-color: #f4f4f4; padding: 20px; border-radius: 5px; margin: 20px 0;">
+            <p style="margin: 10px 0;"><strong>お名前:</strong> ${name}</p>
+            <p style="margin: 10px 0;"><strong>メールアドレス:</strong> ${email}</p>
+          </div>
+          
+          <div style="margin: 20px 0;">
+            <h3 style="color: #2c3e50;">お問い合わせ内容:</h3>
+            <p style="white-space: pre-wrap; line-height: 1.6;">${message}</p>
+          </div>
+          
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+          
+          <p style="color: #7f8c8d; font-size: 12px;">
+            このメールはポートフォリオサイトのコンタクトフォームから自動送信されました。
+          </p>
+        </div>
+      `
+    };
+
+    // 実際にメールを送信する処理
+    // この部分は時間がかかる可能性があるので、awaitで完了を待ちます
+    await transporter.sendMail(mailOptions);
+    
+    // 送信成功をフロントエンドに返す
+    res.json({ 
+      success: true, 
+      message: 'お問い合わせを受け付けました。ありがとうございます！' 
+    });
+    
+  } catch (error) {
+    // エラーが発生した場合、詳細をログに記録して
+    // ユーザーには一般的なエラーメッセージを返します
+    console.error('メール送信エラー:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'メール送信中にエラーが発生しました。後ほど再度お試しください。' 
+    });
+  }
+});
+
 // サーバー起動
 // ホストを '0.0.0.0' に設定することで、Renderからのアクセスが可能になる
 const HOST = '0.0.0.0'; 
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`ポートフォリオサイトが起動しました: http://localhost:${PORT}`);
   console.log('Ctrl+C で終了');
 });
