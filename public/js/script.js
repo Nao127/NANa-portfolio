@@ -238,6 +238,8 @@ function handleEscKey(event) {
 const cursorDot = document.querySelector('.custom-cursor-dot');
 const cursorRing = document.querySelector('.custom-cursor-ring');
 let interactiveElements = document.querySelectorAll('a, button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
+let isFirstMove = true; // 初回移動を検知するフラグ
+let isHovering = false; // ホバー状態を管理
 
 function updateInteractiveElements() {
     // 既存のイベントリスナー削除
@@ -255,8 +257,18 @@ function updateInteractiveElements() {
     });
 }
 
+// 初期状態は非表示
+cursorDot.style.opacity = '0';
+cursorRing.style.opacity = '0';
+
 // カスタムポインターをマウスに追従
 document.addEventListener('mousemove', throttle((eventObject) => {
+    // 初回移動時にカーソルを表示
+    if (isFirstMove) {
+        cursorRing.style.opacity = '1';
+        isFirstMove = false;
+    }
+    
     cursorDot.style.left = eventObject.clientX + 'px';
     cursorDot.style.top = eventObject.clientY + 'px';
     cursorRing.style.left = eventObject.clientX + 'px';
@@ -280,12 +292,17 @@ function throttle(func, limit) {
 
 // ホバー時のスタイル
 function handleMouseEnter() {
+    isHovering = true;
     cursorDot.style.opacity = '0';
+    cursorRing.style.opacity = '1';
+    cursorDot.classList.remove('left-elements');
     cursorRing.classList.add('is-hovering');
 }
 
 function handleMouseLeave() {
+    isHovering = false;
     cursorDot.style.opacity = '1';
+    cursorRing.style.opacity = '0';
     cursorDot.classList.add('left-elements');
     cursorRing.classList.remove('is-hovering');
 }
