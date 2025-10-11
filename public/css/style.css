@@ -120,6 +120,7 @@
 
 /* works tag */
     --tag-font-size: var(--font-size-2xs);
+    --tag-font-color: var(--color-text-base);
     --tag-border: 1px solid var(--color-text-base);
     --tag-radius: var(--radius-sm);
     --tag-padding: var(--spacing-xs);
@@ -344,7 +345,7 @@ header {
     display: flex;
     justify-content: center;
     gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-3xl);
 }
 
 .works-type button {
@@ -398,10 +399,10 @@ header {
 
 /* card_container02 */
 .card_container02 {
-    width: 200%; 
+    width: 300%; 
 }
 .card_container02 .works-card {
-    width: calc(100%/2); 
+    width: calc(100%/3); 
 }
 
 .works-card {
@@ -459,8 +460,12 @@ header {
     height: 100%;
     display: block;
     object-fit: cover;
-    object-position: 50% 0;
+    object-position: top;
     transition: transform 0.4s ease;
+}
+.card_container02 img {
+    object-fit: contain;
+    object-position: center;
 }
 
 .card-description {
@@ -478,6 +483,7 @@ header {
 
 .tag {
     width: 75px;
+    color: var(--tag-font-color);
     text-align: center;
     border: var(--tag-border);
     border-radius: var(--tag-radius);
@@ -1038,6 +1044,9 @@ body.dark-mode {
     --card-title-border-color: 2px solid #444;
     --card-box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4);
 
+    /* works tag */
+    --tag-font-color: #1a1a1a;
+
     /* contact form */
     --form-border: 1px solid #555;
 
@@ -1071,6 +1080,22 @@ body.dark-mode #chatInput {
     color: var(--color-text-base);
     border-color: var(--chat-input-border-color);
 }
+body.darkmode #chatInput::placeholder {
+    color: var(--color-grey-100);
+}
+
+/* モーダルウィンドウ */
+.modal-overlay.dark-mode {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.modal-overlay.dark-mode .modal-content {
+    background-color: var(--color-background-subtle);
+}
+.modal-overlay.dark-mode .modal-close-btn {
+    color: var(--color-grey-100);
+}
+
+
 
 /* スムーズな色の切り替え */
 body, .header, .section, input, textarea, button, .works-card, .chat-widget {

@@ -257,18 +257,8 @@ function updateInteractiveElements() {
     });
 }
 
-// 初期状態は非表示
-cursorDot.style.opacity = '0';
-cursorRing.style.opacity = '0';
-
 // カスタムポインターをマウスに追従
 document.addEventListener('mousemove', throttle((eventObject) => {
-    // 初回移動時にカーソルを表示
-    if (isFirstMove) {
-        cursorRing.style.opacity = '1';
-        isFirstMove = false;
-    }
-    
     cursorDot.style.left = eventObject.clientX + 'px';
     cursorDot.style.top = eventObject.clientY + 'px';
     cursorRing.style.left = eventObject.clientX + 'px';
@@ -292,7 +282,6 @@ function throttle(func, limit) {
 
 // ホバー時のスタイル
 function handleMouseEnter() {
-    isHovering = true;
     cursorDot.style.opacity = '0';
     cursorRing.style.opacity = '1';
     cursorDot.classList.remove('left-elements');
@@ -300,7 +289,6 @@ function handleMouseEnter() {
 }
 
 function handleMouseLeave() {
-    isHovering = false;
     cursorDot.style.opacity = '1';
     cursorRing.style.opacity = '0';
     cursorDot.classList.add('left-elements');
@@ -508,14 +496,21 @@ themeToggleBtn.innerHTML = '<i class="las la-sun"></i><i class="las la-moon"></i
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
+    modalOverlay.classList.add('dark-mode');
 }
 
 // 2. ボタンクリック時のイベントリスナー
 themeToggleBtn.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
+    modalOverlay.classList.toggle('dark-mode');
     
     // 3. 切り替えた設定をlocalStorageに保存する
     if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+    if (modalOverlay.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
     } else {
         localStorage.setItem('theme', 'light');

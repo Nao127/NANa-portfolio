@@ -1,1 +1,0 @@
-これはmy-first-branchaにしかないファイルのはず
