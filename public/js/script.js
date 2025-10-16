@@ -515,5 +515,4 @@ themeToggleBtn.addEventListener('click', () => {
     } else {
         localStorage.setItem('theme', 'light');
     }
-
 });
