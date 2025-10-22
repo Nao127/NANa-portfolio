@@ -11,7 +11,7 @@ Nagahama Naokiの技術・作品・経歴を知ることができます。
 **Nagahama Naoki (NANa)** がフルスタックエンジニアを目指して制作した  
 「AIチャット付き自己紹介サイト」です。
 
-AIとの自然な会話を通して、
+AIとの自然な会話を通して、  
 スキル・制作実績・学習記録などをインタラクティブに紹介します。  
 
 - フロントエンド：HTML / CSS / JavaScript  
@@ -67,7 +67,7 @@ EMAIL_TO=受信先メールアドレス
 ```bash
 node server.js
 ```
-⇩ブラウザで開く
+⇩ブラウザで開く  
 http://localhost:3000
 
 ---
@@ -80,31 +80,31 @@ http://localhost:3000
 ---
 
 ## 📁ディレクトリ構成
-📦 NANa-portfolio
-├── docs/
-│   ├── index.html       # メインページ
-│   ├── style.css        # デザイン
-│   └── script.js        # ロジック
-├── server.js            # Node.jsサーバー（Gemini API接続）
-├── package-lock.json    # ライブラリ収納
-├── package.json         # 使用ライブラリ設定
-├── .env                 # APIキー（非公開）
-└── README.md            # このファイル
+📦 NANa-portfolio  
+├── docs/  
+│   ├── index.html       # メインページ  
+│   ├── style.css        # デザイン  
+│   └── script.js        # ロジック  
+├── server.js            # Node.jsサーバー（Gemini API接続）  
+├── package-lock.json    # ライブラリ収納  
+├── package.json         # 使用ライブラリ設定  
+├── .env                 # APIキー（非公開）  
+└── README.md            # このファイル  
 
 ---
 
 ## 🌐公開URL
-・GitHubリポジトリ
-　👉https://github.com/Nao127/NANa-portfolio
-・Render（公開サイト）⚠️基本動いていないです
-　👉https://portfolio-chatbot-uytc.onrender.com/
+・GitHubリポジトリ  
+　👉https://github.com/Nao127/NANa-portfolio  
+・Render（公開サイト）⚠️基本動いていないです  
+　👉https://portfolio-chatbot-uytc.onrender.com/  
 
 ---
 
 ## 👤作者情報
-Nagahama Naoki
-・📫Mail: nana1238.web@gmail.com
-・🐱GitHub: @Nao127
+Nagahama Naoki  
+・📫Mail: nana1238.web@gmail.com  
+・🐱GitHub: @Nao127  
 
 ---
 
@@ -129,6 +129,6 @@ Nagahama Naoki
 ---
 
 ## 📝制作の背景
-自分のポートフォリオサイトが必要だと思い、制作しました。
-AIとの共創を通して、
+自分のポートフォリオサイトが必要だと思い、制作しました。  
+AIとの共創を通して、  
 コーディング力・構築力・デザイン力・AI応用力を総合的に鍛えています。
