@@ -766,6 +766,7 @@ body.dark-mode .contact-message-alert.error {
 }
 
 .chat-widget {
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
     background: white;
