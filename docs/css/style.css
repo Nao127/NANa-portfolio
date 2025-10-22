@@ -864,6 +864,7 @@ body.dark-mode .contact-message-alert.error {
 }
 
 #chatInput {
+    width: 100%;
     flex: 1;
     padding: var(--spacing-sm) var(--spacing-md);
     border: 2px solid #e0e0e0;
