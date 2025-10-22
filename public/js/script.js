@@ -237,7 +237,7 @@ function handleEscKey(event) {
 // cutom cursor
 const cursorDot = document.querySelector('.custom-cursor-dot');
 const cursorRing = document.querySelector('.custom-cursor-ring');
-let interactiveElements = document.querySelectorAll('a, button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
+let interactiveElements = document.querySelectorAll('a:not(.img-anchor), button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
 let isFirstMove = true; // 初回移動を検知するフラグ
 let isHovering = false; // ホバー状態を管理
 
@@ -248,7 +248,7 @@ function updateInteractiveElements() {
         element.removeEventListener('mouseleave', handleMouseLeave);
     });
 
-    interactiveElements = document.querySelectorAll('a, button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
+    interactiveElements = document.querySelectorAll('a:not(.img-anchor), button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
 
     // イベントリスナー再設定
     interactiveElements.forEach(element => {
