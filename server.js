@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // 静的ファイルを提供（パスを明示）
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 // Gemini API初期化
 const apiKey = process.env.GEMINI_API_KEY;
