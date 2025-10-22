@@ -241,30 +241,6 @@ let interactiveElements = document.querySelectorAll('a:not(.img-anchor), button,
 let isFirstMove = true; // 初回移動を検知するフラグ
 let isHovering = false; // ホバー状態を管理
 
-function updateInteractiveElements() {
-    // 既存のイベントリスナー削除
-    interactiveElements.forEach(element => {
-        element.removeEventListener('mouseenter', handleMouseEnter);
-        element.removeEventListener('mouseleave', handleMouseLeave);
-    });
-
-    interactiveElements = document.querySelectorAll('a:not(.img-anchor), button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
-
-    // イベントリスナー再設定
-    interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', handleMouseEnter);
-        element.addEventListener('mouseleave', handleMouseLeave);
-    });
-}
-
-// カスタムポインターをマウスに追従
-document.addEventListener('mousemove', throttle((eventObject) => {
-    cursorDot.style.left = eventObject.clientX + 'px';
-    cursorDot.style.top = eventObject.clientY + 'px';
-    cursorRing.style.left = eventObject.clientX + 'px';
-    cursorRing.style.top = eventObject.clientY + 'px';
-}, 16));
-
 // スロットリング関数
 function throttle(func, limit) {
     let inThrottle;
@@ -295,16 +271,51 @@ function handleMouseLeave() {
     cursorRing.classList.remove('is-hovering');
 }
 
-updateInteractiveElements();
+function updateInteractiveElements() {
+    // 既存のイベントリスナー削除
+    interactiveElements.forEach(element => {
+        element.removeEventListener('mouseenter', handleMouseEnter);
+        element.removeEventListener('mouseleave', handleMouseLeave);
+    });
 
-// viewport出入り
-document.addEventListener('mouseleave', () => {
-    cursorDot.style.opacity = '0';
-    cursorDot.classList.remove('left-elements');
-});
-document.addEventListener('mouseenter', () => {
-    cursorDot.style.opacity = '1';
-});
+    interactiveElements = document.querySelectorAll('a:not(.img-anchor), button, input, textarea, .works-card, .circle span, .modal-content a, .modal-content button');
+
+    // イベントリスナー再設定
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', handleMouseEnter);
+        element.addEventListener('mouseleave', handleMouseLeave);
+    });
+}
+
+
+// モバイルとPCでの処理分岐
+const userAgent = navigator.userAgent.toLowerCase();
+const isMobile = /mobile|android|iphone|ipad|ipod/.test(userAgent);
+
+if (isMobile) {
+    document.body.style.cursor = 'default';
+    cursorDot.style.display = 'none';
+    cursorRing.style.display = 'none';
+} else {
+    // PCでのみカスタムポインターをマウスに追従
+    document.addEventListener('mousemove', throttle((eventObject) => {
+        cursorDot.style.left = eventObject.clientX + 'px';
+        cursorDot.style.top = eventObject.clientY + 'px';
+        cursorRing.style.left = eventObject.clientX + 'px';
+        cursorRing.style.top = eventObject.clientY + 'px';
+    }, 16));
+
+    updateInteractiveElements();
+
+    // viewport出入り
+    document.addEventListener('mouseleave', () => {
+        cursorDot.style.opacity = '0';
+        cursorDot.classList.remove('left-elements');
+    });
+    document.addEventListener('mouseenter', () => {
+        cursorDot.style.opacity = '1';
+    });
+}
 
 
 // ===== チャットボット機能 =====
