@@ -373,7 +373,7 @@ header {
 
 .c_container {
     width: 80%;
-    max-width: 500px;
+    max-width: 350px;
     overflow: hidden;
     margin-bottom: var(--spacing-lg);
 }
