@@ -7,9 +7,9 @@ Nagahama Naokiの技術・作品・経歴を知ることができます。
 
 ## 🧠 概要
 
-このポートフォリオサイトは、  
+このサイトは、  
 **Nagahama Naoki (NANa)** がフルスタックエンジニアを目指して制作した  
-「AIチャット付き自己紹介サイト」です。
+「AIチャット付きポートフォリオサイト」です。
 
 AIとの自然な会話を通して、  
 スキル・制作実績などをインタラクティブに紹介します。  
@@ -44,26 +44,20 @@ AIとの自然な会話を通して、
 
 ## 🧩 環境構築方法
 
-### 1️⃣ リポジトリをクローン
-```bash
-git clone https://github.com/Nao127/NANa-portfolio.git
-cd NANa-portfolio
-```
-
-### 2️⃣ パッケージをインストール
+### 1️⃣ パッケージをインストール
 ```bash
 npm instasll
 ```
 
-### 3️⃣ 環境変数を設定
+### 2️⃣ 環境変数を設定
 ```env
-GEMINI_API_KEY=あなたのGeminiAPIキー
-EMAIL_USER=あなたのGmailアドレス
+GEMINI_API_KEY=GeminiAPIキー
+EMAIL_USER=Gmailアドレス
 EMAIL_PASS=Gmailアプリパスワード
 EMAIL_TO=受信先メールアドレス
 ```
 
-### 4️⃣ ローカルサーバーを起動
+### 3️⃣ ローカルサーバーを起動
 ```bash
 node server.js
 ```
